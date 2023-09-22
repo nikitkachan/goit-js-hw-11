@@ -49,8 +49,13 @@ async function onSubmitHandler(e) {
   e.preventDefault();
   galleryEl.innerHTML = "";
   page = 1;
-  inputData = e.target[0].value;
+  inputData = e.target[0].value.trim();
   const res = await fetchImages(inputData, page);
+
+  if (inputData==="") {
+    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+    return
+  };
   
   if (res.data.totalHits > 0) {
     Notiflix.Notify.success(`Hooray! We found ${res.data.totalHits} images.`);
@@ -59,8 +64,9 @@ async function onSubmitHandler(e) {
     loadMoreBtn.classList.replace("load-more", "load-more-hidden");
     return
   };
+
   renderImages(res.data.hits, galleryEl);
-  gallery = new SimpleLightbox('.gallery a', { captionDelay: "250" });
+  gallery = new SimpleLightbox('.gallery a', { captionData: 'alt', captionDelay: "250" });
   loadMoreBtn.classList.replace("load-more-hidden", "load-more");
   
   if (galleryEl.childElementCount >= res.data.totalHits) {
@@ -75,6 +81,7 @@ page += 1;
   gallery.refresh();
   
   if (galleryEl.childElementCount >= res.data.totalHits) {
+   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results."); 
   loadMoreBtn.classList.replace("load-more", "load-more-hidden");
   };
 
