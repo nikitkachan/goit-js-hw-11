@@ -66,7 +66,7 @@ async function onSubmitHandler(e) {
   };
 
   renderImages(res.data.hits, galleryEl);
-  gallery = new SimpleLightbox('.gallery a', { captionData: 'alt', captionDelay: "250" });
+  gallery = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: "250" });
   loadMoreBtn.classList.replace("load-more-hidden", "load-more");
   
   if (galleryEl.childElementCount >= res.data.totalHits) {
